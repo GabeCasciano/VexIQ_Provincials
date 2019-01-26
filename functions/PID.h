@@ -1,23 +1,24 @@
+typedef struct{
+	int Kp, Kd, Ki;
+}PID_constants;
 
 typedef struct{
-	int target, deadband;
-	double Kp, Ki, Kd;
-	double *output, *input;
-	double integrator, previousError;
-}PID_Values;
+	int error, target, output, accum, previous, input;
+}PID_values;
 
-bool calculatePID(PID_Values value){
-	int error = value->target - values->*input;
-	double proportional = Kp * error;
-	double derivatie = Kd * (error - value->previousError);
-	value->previousError = error;
-	value->integrator += Ki * error;
-	if(abs(error) > deadband)
-		value->*output = proportional + derivative + 
-value->integrator;
-	else{
-		value->*output = 0;
-		return true;
-	}
-	return false;
+void calculate(PID_constants *constants, PID_values *values, ){
+	values->error = values->target - values->input;
+	values->accum += values->error;
+	values->output = (constants->Kp * values->error) + (constants->Ki * values->accum) + (constants->Kd * (values->previous - values->error));
+	values->previous = values->error;
+	if(abs(values->error) < 5)
+		values->output = 0;
+}
+void resetValues(PID_values *values){
+	values->error = 0;
+	values->target = 0;
+	values->output = 0;
+	values->accum = 0;
+	values->previous = 0;
+	values->input = 0;
 }
