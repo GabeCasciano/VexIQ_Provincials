@@ -1,3 +1,4 @@
+
 typedef struct{
 	double Kp, Ki, Kd;
 	double *output, *input;
