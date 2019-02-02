@@ -1,5 +1,5 @@
-//Written by: Gabriel Casciano
-//PID base function, requires the use of the PID_constants & PID_values structs
+/*Written by: Gabriel Casciano
+PID base function, requires the use of the PID_constants & PID_values structs*/
 
 typedef struct{//contains the constants for the PID calculation
 	int Kp, Kd, Ki;
@@ -21,17 +21,6 @@ void init(PID_constants *constants, int kp, int ki, int kd){
 	constants->Kp = kp;
 	constants->Ki = ki;
 	constants->Kd = kd;
-}
-
-/*Use this function to set a new target
-
-	Parameters:
-		*vals -> structure containing the PID values, PID_values pointer;
-		target -> the new target to calculate for, integer;
-*/
-void setNewTarget(PID_values *vals, int target){
-	vals->target = target;
-	resetValues(vals);
 }
 
 /*Use this function to calculate the PID
@@ -67,4 +56,15 @@ void resetValues(PID_values *values){
 	values->accum = 0;
 	values->previous = 0;
 	values->input = 0;
+}
+
+/*Use this function to set a new target
+
+	Parameters:
+		*vals -> structure containing the PID values, PID_values pointer;
+		target -> the new target to calculate for, integer;
+*/
+void setNewTarget(PID_values *vals, int target){
+	vals->target = target;
+	resetValues(vals);
 }
