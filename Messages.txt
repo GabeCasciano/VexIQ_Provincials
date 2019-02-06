@@ -1,3 +1,1 @@
-added messages
-delete messages after you see them so the other person knows you read it
-after you finish working you write "#gabe was here"
+#Vincent debugged
