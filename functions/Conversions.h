@@ -4,9 +4,9 @@
 #define ticksPerRotation 960
 
 float ticksToLinearDistance(int ticks, float diameter){
-	return (ticks/ticksPerRotation) * pi * diameter;
+	return (ticks/ticksPerRotation) * PI * diameter;
 }
 
 float tickToRotations(int ticks){
-	return (ticks/ticksPerRotation) * 360
+	return (ticks/ticksPerRotation) * 360;
 }
