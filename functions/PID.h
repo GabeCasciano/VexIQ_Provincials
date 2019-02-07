@@ -35,7 +35,7 @@ void init(PID_constants *constants, int kp, int ki, int kd){
 bool calculate(PID_constants *constants, PID_values *values){
 	values->error = values->target - values->input;
 	values->accum += values->error;
-	values->output = (constants->Kp * values->error) + (constants->Ki * values->accum) + (constants->Kd * (values->previous - values->error));
+	values->output = (constants->Kp * values->error) + (constants->Ki * values->accum) + (constants->Kd * (values->error - values->previous));
 	values->previous = values->error;
 	if(abs(values->error) < 5){
 		values->output = 0;
