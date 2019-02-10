@@ -1,1 +1,2 @@
-#Vincent debugged
+#Vincent tried if git bash worked offline
+#vincent commented in "Bapple auto"
