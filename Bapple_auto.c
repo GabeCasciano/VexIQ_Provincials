@@ -7,34 +7,18 @@
 #pragma config(Motor,  motor10,         leftMotor,     tmotorVexIQ, PIDControl, driveLeft, encoder)
 #pragma config(Motor,  motor11,         Lspike,        tmotorVexIQ, PIDControl, reversed, encoder)
 //* this is the actual autonomous not a copy *//
-
 #include "functions/PID.h"
 #include "functions/Conversions.h"
+#include "functions/Motions.h"
+/* #include "subsystems/Arm.h
 /* #include "subsystems/Drive.h"
 /* gabriel caciano russian hackers and vl russian hackers have hacked this thingyyyyyyyyyyyyyyyy */
 /* header def
-18 = Arm
-19 = Conversions
-20 = Drive
 17 = PID
+18 = Conversions
+19 = Motions
 */
 
-PID_constants driveConstants;
-PID_values driveValues;
-
-
-
-void drive(int target){
-	init(&driveConstants, 1.0, 0, 0);
-	setNewTarget(&driveValues, target);
-
-	while(!calculate(&driveConstants, &driveValues)){
-		motor[leftMotor] = driveValues.output;
-		motor[rightMotor] = driveValues.output;
-	}
-
-	resetValues(driveValues);
-}
 
 task main(){
 

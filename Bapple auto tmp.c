@@ -63,11 +63,11 @@ void rspiker(int rspik){
 	}
 }
 
-void armi(int arm){
-	error = arm - getMotorEncoder(armMotor1);
+void arm(int armi){
+	error = armi - getMotorEncoder(armMotor1);
 	while(error > 5){
-		motor[armMotor1] = PID(arm, 1, 120, getMotorEncoder(armMotor1));
-		motor[armMotor2] = PID(arm, 1, 120, getMotorEncoder(armMotor2));
+		motor[armMotor1] = PID(armi, 1, 120, getMotorEncoder(armMotor1));
+		motor[armMotor2] = PID(armi, 1, 120, getMotorEncoder(armMotor2));
 	}
 }
 
