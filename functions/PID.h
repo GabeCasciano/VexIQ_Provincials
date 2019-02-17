@@ -1,3 +1,4 @@
+
 /*Written by: Gabriel Casciano
 PID base function, requires the use of the PID_constants & PID_values structs*/
 
@@ -32,11 +33,15 @@ void init(PID_constants *constants, int kp, int ki, int kd){
 	Return:
 		bool -> true if the error is within 5 of the target, false otherwise;
 */
+int stoop = false;
 bool calculate(PID_constants *constants, PID_values *values){
 	values->error = values->target - values->input;
 	values->accum += values->error;
 	values->output = (constants->Kp * values->error) + (constants->Ki * values->accum) + (constants->Kd * (values->error - values->previous));
 	values->previous = values->error;
+	if(stoop == true){
+		values->output = 0;
+	}
 	if(abs(values->error) < 5){
 		values->output = 0;
 		return true;
