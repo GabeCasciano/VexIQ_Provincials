@@ -22,6 +22,25 @@
 
 task main(){
 
-
+	drive(placeholder); //forward
+	waitUntilMotorStop(leftMotor);
+	Lturn(placeholder); //turn left to tower
+	waitUntilMotorStop(leftMotor);
+	drive(placeholder); //forward to tower
+	waitUntilMotorStop(leftMotor);
+	Rturn(placeholder); //right a little
+	waitUntilMotorStop(rightMotor);
+	Arm(placeholder); //arm up to level
+	waitUntilMotorStop(armMotor1);
+	drive(placeholder); //forward all the way
+	waitUntilMotorStop(leftMotor);
+	Arm(placeholder); //take bonus
+	waitUntilMotorStop(armMotor1);
+	drive(placeholder); //backwards
+	waitUntilMotorStop(leftMotor);
+	Arm(placeholder); //arm down a little
+	waitUntilMotorStop(armMotor1);
+	Lturn(placeholder); //turn to other hubs
+	waitUntilMotorStop(leftMotor);
 
 }

@@ -1,6 +1,8 @@
 //Written by: Vincent liu
 //Motion functions
 
+int placeholder;
+
 PID_constants driveConstants;
 PID_values driveValues;
 
@@ -125,7 +127,3 @@ void example(){
 	moves the arm catch stuff
 }
 */
-
-void motion1(){
-}
-
