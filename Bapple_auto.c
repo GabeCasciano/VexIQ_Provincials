@@ -42,5 +42,11 @@ task main(){
 	waitUntilMotorStop(armMotor1);
 	Lturn(placeholder); //turn to other hubs
 	waitUntilMotorStop(leftMotor);
+	Drive(placeholder); //go to hubs
+	waitUntilMotorStop(leftMotor);
+	Rturn(placeholder); //turn to first hub
+	waitUntilMotorStop(rightMotor);
+	Lspiker(placeholder); //spike down to catch
+
 
 }
