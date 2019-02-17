@@ -46,16 +46,24 @@ void followPath(int path[][], int len1){
 	updateMotorOutput(driveVals);
 }
 
-void driveStraight(int distance){
-
+bool driveStraight(int distance){
+	updateMotorEncoders();
+	driveVals->leftVals->target = distance;
+	driveVals->rightVals->target = distance;
+	if(calculate(driveVals->leftConst, driveVals->leftVals) && calculate(driveVals->rightConst, driveVals->rightVals))
+		return true;
+	updateMotorOutput();
+	return false;
 }
 
-void rotateInPlace(int degRotation){
-
-}
-
-void driveArc(int radius, int degRotation){
-
+bool rotateInPlace(int degRotation){
+	updateMotorEncoders();
+	driveVals->gyroVals->target = degRotation;
+	if(calculate(driveVals->gyroConst, driveVals->gyroVals))
+		return true;
+	motor[driveVals->leftPort] = -driveVals->gyroVals->output;
+	motor[driveVals->rightPort] = driveVals->gyroVals->output;
+	return false;
 }
 
 void driveInit(int leftPort, int rightPort, bool auto){
@@ -63,6 +71,12 @@ void driveInit(int leftPort, int rightPort, bool auto){
 	driveVals->rightPort = rightPort;
 	driveVals->isAuto = auto;
 
-	if(auto)
+	init(driveVals->leftConst, drive_Kp, drive_Ki, drive_Kd);
+	init(driveVals->rightConst, drive_Kp, drive_Ki, drive_Kd);
+	init(driveVals->gyroConst, drive_Kp, drive_Ki, drive_Kd);
+
+	resetValues(driveVals->leftVals);
+	resetValues(driveVals->rightVals);
+	resetValues(driveVals->gyroVals);
 
 }
