@@ -47,6 +47,7 @@ task main()
 				}
 				break;
 			case 3: //1st hub & claws up
+					«
 				break;
 			case 4: //grab hubs
 				break;
