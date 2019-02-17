@@ -11,9 +11,51 @@
 
 driveInit(10, 9, true);
 
+void screen(int index){
+	displayTextLine(0,"Current State: %d", index);
+	displayTextLine(1,"Drive Position (L&R): %d %d", getMotorEncoder(leftMotor), getMotorEncoder(rightMotor));
+	displayTextLine(2,"Arm Location: %d", getMotorEncoder(armMotor1));
+	displayTextLine(3,"Catcher Location (L&R): %d %d", getMotorEncoder(leftCatchMotor), getMotorEncoder(rightCatchMotor));
+}
+
 task main()
 {
+	int index = 0;
+	isAuto = true;
 
-
-
+	while(isAuto){
+		screen(index);
+		switch(index){
+			case 0: //drive a little bit
+				if(driveStraight(100)){
+					resetValues(driveVals->leftVals);
+					resetValues(driveVals->rightVals);
+					index++;
+				}
+				break;
+			case 1: //turn 90 deg right
+				if(rotateInPlace(90)){
+					resetValues(driveVals->gyroVals);
+					index++;
+				}
+				break;
+			case 2: //drive straight more
+				if(driveStraight(1000)){
+					resetValues(driveVals->leftVals);
+					resetValues(driveVals->rightVals);
+					index++;
+				}
+				break;
+			case 3: //1st hub & claws up
+				break;
+			case 4: //grab hubs
+				break;
+			case 5: //reverse accross field
+				break;
+			default:
+					displayTextLine(0, "Incorrect state");
+					isAuto = false;
+				break
+		}
+	}
 }
