@@ -11,7 +11,6 @@
 //* this is the actual autonomous not a copy *//
 #include "functions/PID.h"
 #include "functions/Conversions.h"
-#include "functions/Motions.h"
 /* #include "subsystems/Arm.h
 /* #include "subsystems/Drive.h"
 /* gabriel caciano russian hackers and vl russian hackers have hacked this thingyyyyyyyyyyyyyyyy */
@@ -23,6 +22,62 @@
 
 //Written by: Vincent liu
 //Motion functions
+
+typedef struct{//contains the constants for the PID calculation
+	int Kp, Kd, Ki;
+}PID_constants;
+
+typedef struct{//contains the values calculated or set by the PID calculation
+	int error, target, output, accum, previous, input, calc, multiplier;
+	bool mult;
+}PID_values;
+
+void init(PID_constants *constants, int kp, int ki, int kd){
+	constants->Kp = kp;
+	constants->Ki = ki;
+	constants->Kd = kd;
+}
+
+bool calculate(PID_constants *constants, PID_values *values){
+	if(mult != true){
+		values->multiplier = 1;
+	}
+	values->error = values->target - values->input;
+	values->accum += values->error;
+	values->calc = (constants->Kp * values->error) + (constants->Ki * values->accum) + (constants->Kd * (values->error - values->previous));
+	values->output = values->calc * values->multiplier;
+	values->previous = values->error;
+	if(stoop == true){
+		values->output = 0;
+	}
+	if(abs(values->error) < 5){
+		values->output = 0;
+		return true;
+	}
+	return false;
+}
+
+void resetValues(PID_values *values){
+	values->error = 0;
+	values->target = 0;
+	values->output = 0;
+	values->accum = 0;
+	values->previous = 0;
+	values->input = 0;
+}
+
+void setNewTarget(PID_values *vals, int target){
+	vals->target = target;
+	resetValues(vals);
+}
+
+float ticksToLinearDistance(int ticks, float diameter){
+	return (ticks/ticksPerRotation) * PI * diameter;
+}
+
+float tickToRotations(int ticks){
+	return (ticks/ticksPerRotation) * 360;
+}
 
 int placeholder;
 
