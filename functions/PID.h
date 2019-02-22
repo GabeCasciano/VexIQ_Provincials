@@ -7,7 +7,8 @@ typedef struct{//contains the constants for the PID calculation
 }PID_constants;
 
 typedef struct{//contains the values calculated or set by the PID calculation
-	int error, target, output, accum, previous, input;
+	int error, target, output, accum, previous, input, calc, multiplier;
+	bool mult;
 }PID_values;
 
 /*Use this function to initialize the PID_constants struct within the main function.
@@ -34,10 +35,15 @@ void init(PID_constants *constants, int kp, int ki, int kd){
 		bool -> true if the error is within 5 of the target, false otherwise;
 */
 int stoop = false;
+bool mult = true;
 bool calculate(PID_constants *constants, PID_values *values){
+	if(mult != true){
+		values->multiplier = 1;
+	}
 	values->error = values->target - values->input;
 	values->accum += values->error;
-	values->output = (constants->Kp * values->error) + (constants->Ki * values->accum) + (constants->Kd * (values->error - values->previous));
+	values->calc = (constants->Kp * values->error) + (constants->Ki * values->accum) + (constants->Kd * (values->error - values->previous));
+	values->output = values->calc * values->multiplier;
 	values->previous = values->error;
 	if(stoop == true){
 		values->output = 0;
