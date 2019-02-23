@@ -18,5 +18,13 @@ typedef struct{
 	int right;
 }Control_def;
 
+typedef struct{
+	int lspik;
+	int rspik;
+	bool Sped;
+	float mult;
+}calc_def;
+
 Spike_def *spik;
 Control_def *cntrl;
+calc_def *values;

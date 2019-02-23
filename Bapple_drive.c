@@ -19,6 +19,23 @@
 //motor[leftmotor] = left*0.9;
 //motor[rightmotor] = right*0.9;
 
+
+int calculate(int lik, int rik){
+	values->lspik = lik;
+	values->rspik = rik;
+	if(abs(values->lspik) || abs(values->rspik) <= 50){
+		values->Sped = true;
+	}else if(abs(values->lspik) || abs(values->rspik) >= 51){
+		values->Sped = false;
+	}
+	if(values->Sped == true){
+		values->mult = 1;
+	}else if(values->Sped == false){
+		values->mult = 0.7;
+	}
+	return values->mult;
+}
+
 //arcade o
 int ArcadeOMapTurbo[101] = {
 	0,0,0,0,0,0,0,0,0,0,
@@ -84,19 +101,13 @@ task main(){
 			cntrl->y = 0;
 		}
 
-		cntrl->y = sgn(cntrl->y) * ArcadeOMapTurbo[abs(cntrl->y)] / 2;
+		cntrl->y = sgn(cntrl->y) * ArcadeOMapTurbo[abs(cntrl->y)] * 0.8;
 
 		cntrl->left = cntrl->x + cntrl->y;
 		cntrl->right = cntrl->x - cntrl->y;
 
-		if(speed == Turbo){
-			motor[leftMotor] = cntrl->left * 1;
-			motor[rightMotor] = cntrl->right * 1;
-		}
-		if(speed == Nurbo){
-			motor[leftMotor] = cntrl->left * 0.7;
-			motor[rightMotor] = cntrl->right * 0.7;
-		}
+		motor[leftMotor] = cntrl->left * calculate(getMotorEncoder(Lspike), getMotorEncoder(Rspike));
+		motor[rightMotor] = cntrl->right * calculate(getMotorEncoder(Lspike), getMotorEncoder(Rspike));
 
 		if(abs(getMotorEncoder(Lspike)) || abs(getMotorEncoder(Rspike)) <= 50){
 			speed = Turbo;
