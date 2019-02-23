@@ -1,4 +1,4 @@
-#pragma config(Sensor, port2,  Push,           sensorVexIQ_Touch)
+#pragma config(Sensor, port2,  RGB,           sensorVexIQ_LED)
 #pragma config(Sensor, port3,  Compass,        sensorVexIQ_Gyro)
 #pragma config(Motor,  motor1,          armMotor1,     tmotorVexIQ, PIDControl, encoder)
 #pragma config(Motor,  motor6,          armMotor2,     tmotorVexIQ, PIDControl, encoder)
@@ -39,9 +39,6 @@ void init(PID_constants *constants, int kp, int ki, int kd){
 }
 
 bool calculate(PID_constants *constants, PID_values *values){
-	if(mult != true){
-		values->multiplier = 1;
-	}
 	values->error = values->target - values->input;
 	values->accum += values->error;
 	values->calc = (constants->Kp * values->error) + (constants->Ki * values->accum) + (constants->Kd * (values->error - values->previous));
@@ -208,11 +205,11 @@ void example(){
 
 task main(){
 
-	waitUntil(getBumperValue(Push));
 	Arm(760);
 /*	Lspiker(286);
 	Rspiker(286);
 	Lturn(-60);
-	waitUntilMotorStop(armMotor1);*/
+	waitUntilMotorStop(armMotor1); */
+	waitUntil(SensorValue[RGB] == 0);
 
 }
