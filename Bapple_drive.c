@@ -47,7 +47,8 @@ int ArcadeOMapTurbo[101] = {
 	40,40,40,40,40,40,40,40,40,40,
 	50,50,50,50,50,50,50,50,50,50,
 	60,62,64,66,68,70,72,74,76,78,
-	84,88,92,96,100,100,100,100,100,100,100};
+	84,88,92,96,100,100,100,100,100,100,100
+};
 
 int ArcadeOMapNurbo[101] = {0,0,0,0,0,0,0,0,0,0,
 	0,0,0,0,0,0,0,0,0,0,
@@ -58,15 +59,10 @@ int ArcadeOMapNurbo[101] = {0,0,0,0,0,0,0,0,0,0,
 	20,20,20,20,20,20,20,20,20,20,
 	30,30,30,30,30,30,30,30,30,30,
 	30,30,30,30,30,30,30,30,30,30,
-	40,40,40,40,40,40,40,40,40,40,40};
+	40,40,40,40,40,40,40,40,40,40,40
+};
 
-enum arm_def {Nothing, BTOM = 0, YELO = 790, TOP = 934, BARM = -140, lvl2 = 380, lvl3 = 590};
-enum spike_def {Nothing, Spike1 = -280, Spike2 = -130, Spike3 = 0};
-enum TN_urbo {Turbo, Nurbo};
 
-arm_def arms = Nothing;
-spike_def spikes = Nothing;
-TN_urbo speed = Turbo;
 
 task main(){
 
@@ -77,13 +73,15 @@ task main(){
 	spik->yesL2 = true;
 	spik->yesR = true;
 	spik->yesR2 = true;
+	spik->spikes = Nothing;
 
-	//cntrl def.
-	cntrl->TURBO = "Happy";
-	cntrl->x = 0;
+	//cntrl def	cntrl->x = 0;
 	cntrl->y = 0;
 	cntrl->left = 0;
 	cntrl->right = 0;
+	cntrl->arms = Nothing;
+	cntrl->speed = Fast;
+	cntrl->TURBO = OK;
 
 	while(true){
 		//arcade r
@@ -110,44 +108,44 @@ task main(){
 		motor[rightMotor] = cntrl->right * calculate(getMotorEncoder(Lspike), getMotorEncoder(Rspike));
 
 		if(abs(getMotorEncoder(Lspike)) || abs(getMotorEncoder(Rspike)) <= 50){
-			speed = Turbo;
+			cntrl->speed = Fast;
 		}else if(abs(getMotorEncoder(Lspike)) || abs(getMotorEncoder(Rspike)) >= 51){
-			speed = Nurbo;
+			cntrl->speed = Slow;
 		}
 
 		if(vexRT[ChD] >= 50){
-			arms = lvl3;
-			setMotorTarget(armMotor1, arms, 127);
-			setMotorTarget(armMotor2, arms, 127);
+			cntrl->arms = lvl3;
+			setMotorTarget(armMotor1, cntrl->arms, 127);
+			setMotorTarget(armMotor2, cntrl->arms, 127);
 		}
 		if(vexRT[ChD] <= -50){
-			arms = lvl2;
-			setMotorTarget(armMotor1, arms, 127);
-			setMotorTarget(armMotor2, arms, 127);
+			cntrl->arms = lvl2;
+			setMotorTarget(armMotor1, cntrl->arms, 127);
+			setMotorTarget(armMotor2, cntrl->arms, 127);
 		}
 
 		//bottom
 		if(vexRT[BtnEDown] == 1){
-			arms = BTOM;
-			setMotorTarget(armMotor1, arms, 127);
-			setMotorTarget(armMotor2, arms, 127);
+			cntrl->arms = BTOM;
+			setMotorTarget(armMotor1, cntrl->arms, 127);
+			setMotorTarget(armMotor2, cntrl->arms, 127);
 		}//yellow
 		if(vexRT[BtnEUp] == 1){
-			arms = YELO;
-			setMotorTarget(armMotor1, arms, 127);
-			setMotorTarget(armMotor2, arms, 127);
+			cntrl->arms = YELO;
+			setMotorTarget(armMotor1, cntrl->arms, 127);
+			setMotorTarget(armMotor2, cntrl->arms, 127);
 		}//top
 		if(vexRT[BtnFUp] == 1){
-			arms = TOP;
-			setMotorTarget(armMotor1, arms, 127);
-			setMotorTarget(armMotor2, arms, 127);
+			cntrl->arms = TOP;
+			setMotorTarget(armMotor1, cntrl->arms, 127);
+			setMotorTarget(armMotor2, cntrl->arms, 127);
 		}
 
 		//back
 		if(vexRT[BtnFDown] == 1){
-			arms = BARM;
-			moveMotorTarget(armMotor1, arms, 127);
-			moveMotorTarget(armMotor2, arms, 127);
+			cntrl->arms = BARM;
+			moveMotorTarget(armMotor1, cntrl->arms, 127);
+			moveMotorTarget(armMotor2, cntrl->arms, 127);
 			setMotorSpeed(leftMotor, -30);
 			setMotorSpeed(rightMotor, -30);
 			wait1Msec(600);
@@ -157,18 +155,18 @@ task main(){
 		if(vexRT[BtnLDown] == 1){
 			if(spik->yesL == true){
 				if(spik->Lspiker == 1){
-					spikes = Spike2;
-					setMotorTarget(Lspike, abs(spikes), 100);
+					spik->spikes = Spike2;
+					setMotorTarget(Lspike, abs(spik->spikes), 100);
 					spik->Lspiker = 2;
 				}
 				else if(spik->Lspiker == 2){
-					spikes = Spike3;
-					setMotorTarget(Lspike, spikes, 100);
+					spik->spikes = Spike3;
+					setMotorTarget(Lspike, spik->spikes, 100);
 					spik->Lspiker = 3;
 				}
 				else if(spik->Lspiker == 3){
-					spikes = Spike2;
-					setMotorTarget(Lspike, abs(spikes), 100);
+					spik->spikes = Spike2;
+					setMotorTarget(Lspike, abs(spik->spikes), 100);
 					spik->Lspiker = 2;
 				}
 				spik->yesL = false;
@@ -180,19 +178,19 @@ task main(){
 		//left spike up aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 		if(vexRT[BtnLUp] == 1){
 			if(spik->yesL2 == true){
-				spikes = Spike1;
+				spik->spikes = Spike1;
 				if(spik->Lspiker == 1){
-					setMotorTarget(Lspike, abs(spikes), 100);
+					setMotorTarget(Lspike, abs(spik->spikes), 100);
 					spik->Lspiker = 1;
 				}
 				if(spik->Lspiker == 2){
-					spikes = Spike1;
-					setMotorTarget(Lspike, abs(spikes), 100);
+					spik->spikes = Spike1;
+					setMotorTarget(Lspike, abs(spik->spikes), 100);
 					spik->Rspiker = 1;
 				}
 				if(spik->Lspiker == 3){
-					spikes = Spike1;
-					setMotorTarget(Lspike, abs(spikes), 100);
+					spik->spikes = Spike1;
+					setMotorTarget(Lspike, abs(spik->spikes), 100);
 					spik->Rspiker = 1;
 				}
 				spik->yesL2 = false;
@@ -205,18 +203,18 @@ task main(){
 		if(vexRT[BtnRDown] == 1){
 			if(spik->yesR == true){
 				if(spik->Rspiker == 1){
-					spikes = Spike2;
-					setMotorTarget(Rspike, spikes, 100);
+					spik->spikes = Spike2;
+					setMotorTarget(Rspike, spik->spikes, 100);
 					spik->Rspiker = 2;
 				}
 				else if(spik->Rspiker == 2){
-					spikes = Spike3;
-					setMotorTarget(Rspike, spikes, 100);
+					spik->spikes = Spike3;
+					setMotorTarget(Rspike, spik->spikes, 100);
 					spik->Rspiker = 3;
 				}
 				else if(spik->Rspiker == 3){
-					spikes = Spike2;
-					setMotorTarget(Rspike, spikes, 100);
+					spik->spikes = Spike2;
+					setMotorTarget(Rspike, spik->spikes, 100);
 					spik->Rspiker = 2;
 				}
 				spik->yesR = false;
@@ -228,17 +226,17 @@ task main(){
 		//right spike up aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 		if(vexRT[BtnRUp] == 1){
 			if(spik->yesR2 == true){
-				spikes = Spike1;
+				spik->spikes = Spike1;
 				if(spik->Rspiker == 1){
-					setMotorTarget(Rspike, spikes, 100);
+					setMotorTarget(Rspike, spik->spikes, 100);
 					spik->Rspiker = 1;
 				}
 				if(spik->Rspiker == 2){
-					setMotorTarget(Rspike, spikes, 100);
+					setMotorTarget(Rspike, spik->spikes, 100);
 					spik->Rspiker = 1;
 				}
 				if(spik->Rspiker == 3){
-					setMotorTarget(Rspike, spikes, 100);
+					setMotorTarget(Rspike, spik->spikes, 100);
 					spik->Rspiker = 1;
 				}
 				spik->yesR2 = false;
@@ -248,8 +246,8 @@ task main(){
 		}
 
 		//resetting stuffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff
-		arms = Nothing;
-		spikes = Nothing;
+		cntrl->arms = Nothing;
+		spik->spikes = Nothing;
 
 	}
 

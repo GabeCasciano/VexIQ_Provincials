@@ -1,5 +1,5 @@
-#pragma config(Sensor, port2,  RGB,           sensorVexIQ_LED)
-#pragma config(Sensor, port3,  Compass,        sensorVexIQ_Gyro)
+#pragma config(Sensor, port2,  Compass,           sensorVexIQ_Gyro)
+#pragma config(Sensor, port3,  RGB,        sensorVexIQ_LED)
 #pragma config(Motor,  motor1,          armMotor1,     tmotorVexIQ, PIDControl, encoder)
 #pragma config(Motor,  motor6,          armMotor2,     tmotorVexIQ, PIDControl, encoder)
 #pragma config(Motor,  motor8,          Rspike,        tmotorVexIQ, PIDControl, encoder)
@@ -195,9 +195,9 @@ void Arm(int armi){
 void example(){
 	drive(value);
 	goes forward and backward
-	Lturn(degrees); always make sure sure that this number is positive
+	Lturn(degrees); always make sure sure that this number is negative
 	turns left
-	Rturn(degrees); this one should be positive too
+	Rturn(degrees); this one should be positive
 		turns right
 	Lspiker(value);
 	moves left spike up/down
