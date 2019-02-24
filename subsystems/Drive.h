@@ -46,11 +46,19 @@ void followPath(int path[][], int len1){
 	updateMotorOutput(driveVals);
 }
 
-void driveStraight(int distance){
-
+bool driveStraight(int distance){
+    updateMotorEncoders();
+    leftVals->target = distance;
+    rightVals->target = distance;
+    if(!calculate(driveVals->leftConst, driveVals->leftVals) && !calculate(driveVals->rightConst,driveVals->rightVals))
+        updateMotorOutput();
+    else
+        return true;
+    return true;
 }
 
 void rotateInPlace(int degRotation){
+    updateGyro()
 
 }
 
@@ -63,6 +71,7 @@ void driveInit(int leftPort, int rightPort, bool auto){
 	driveVals->rightPort = rightPort;
 	driveVals->isAuto = auto;
 
-	if(auto)
-
+	init(driveVals->leftConst, 1.0, 0, 0);
+	init(driveVals->rightConst,1.0, 0, 0);
+	init(driveVals->gyroConst, 2.0, 0, 0);
 }
