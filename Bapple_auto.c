@@ -187,7 +187,7 @@ void Arm(int armi){
 		Arinput();
 	}
 
-	resetValues(driveValues);
+	resetValues(&driveValues);
 }
 
 //example of how to use
